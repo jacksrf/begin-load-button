@@ -9,10 +9,26 @@ body {
     height: 100vh;
     width: 100%;
     margin: 0px;
-    position: relative;
+    position: fixed;
     display: flex;
     align-items: center;
     justify-content: center;
+    top: 0;
+    left: 0;
+    z-index: 5;
+}
+
+.page {
+    width: 100vw;
+    height: 100vh;
+    float: left;
+    position: relative;
+    z-index: 1;
+    background: black;
+}
+
+.page img {
+    width: 100%;
 }
 
 .circle {
@@ -27,8 +43,9 @@ body {
 /*    background: #000;*/
     filter: blur(18.25px);
 /*    background: rgba(255, 255, 255, 0.75);*/
-    transition: all 500ms;
-	-webkit-transition: all 500ms;
+/*    transition: all 500ms;
+	-webkit-transition: all 500ms;*/
+	display: none;
 }
 
 .solid_circle {
@@ -87,7 +104,7 @@ svg {
 
 circle {
   stroke: white;
-  stroke-width: 1;
+  stroke-width: 0;
   fill: black;
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
@@ -126,6 +143,14 @@ svg {
 }
 
 .begin {
+	position: absolute;
+    z-index: 9;
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+.begin_inner {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -133,9 +158,18 @@ svg {
     height: 100%;
     font-size: 36px;
     color: white;
-    font-family: system-ui;
-    position: absolute;
-    z-index: 9;
+    font-family: system-ui;  
+}
+
+.begin.lockHide {
+	opacity: 0!important;
+}
+
+.solid_circle.enlarge {
+    width: 110vw;
+    height: 110vw;
+    transition: all 2500ms;
+    -webkit-transition: all 2500ms;
 }
 
 </style>
@@ -146,7 +180,9 @@ svg {
 	</svg>
 	<div class="solid_circle">
 		<div class="begin">
-			<span>BEGIN</span>
+			<div class="begin_inner">
+				<span>BEGIN</span>
+			</div>
 		</div>
 		<div class="percent"><span>0</span>%</div>
 	</div>
@@ -154,7 +190,10 @@ svg {
 	<div class="circle circle2" style="background: rgba(255,255,255,.50); opacity: .5; width: 22.5vw; height: 22.5vw;"></div>
 	<!-- <div class="circle" style="background: rgba(255,255,255,.95); opacity: .25; width: 27.5vw; height: 27.5vw;"></div> -->
 	<div class="circle circle3" style="background: rgba(255,255,255,.25); opacity: .5; width: 25vw; height: 25vw;"></div>
-	
+</div>
+
+<div class="page">
+	<img data-gif="./page.gif" src="./page.jpg"/>
 </div>
 
 
@@ -166,7 +205,7 @@ svg {
 <script>
 
 	var counter = 0;
-
+	var interval;
 	// while (counter < 101) {
 		function displayHello() {
 			if (counter < 100) {
@@ -181,15 +220,34 @@ svg {
 			} else {
 				$('.percent').fadeOut()
 				$('svg circle').animate({'stroke-width': 0}, 10);
+				$('.begin').fadeIn(2000)
 			}
 			
 		}
 		
 
 		$('.begin').click(function() {
+			clearInterval(interval)
+			$('.begin').hide()
+			$('.solid_circle').addClass('enlarge')
+			$('.begin').addClass('lockHide')
+			setTimeout(function(){
+				$('.viewport').fadeOut()
+				$('.page').fadeIn()
+				setTimeout(function(){
+					$('.page img').attr('src', $('.page img').data('gif'))
+				}, 1000)
+			}, 1500)
+		})
+
+		$(window).on('load', function() {
+			$('.percent').fadeIn(2000)
+			$('.circle').fadeIn(4000)
 			$('.percent').addClass('active')
-			$('.begin').fadeOut()
-			setInterval(displayHello, 100);
+			$('svg circle').animate({'stroke-width': 1}, 10);
+			
+			interval = setInterval(displayHello, 100);
+		
 		})
 		
 	// }
