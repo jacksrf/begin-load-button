@@ -1,0 +1,204 @@
+<style>
+
+body {
+    margin: 0px;
+}
+
+.viewport {
+    background: black;
+    height: 100vh;
+    width: 100%;
+    margin: 0px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    border-radius: 50%;
+    border: 0.73px solid #FFF;
+/*    background: #000;*/
+    filter: blur(18.25px);
+/*    background: rgba(255, 255, 255, 0.75);*/
+    transition: all 500ms;
+	-webkit-transition: all 500ms;
+}
+
+.solid_circle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 5;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: black;
+    opacity: 1;
+    width: calc(20vw - 8px);
+    height: calc(20vw - 8px);
+}
+
+svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 4;
+}
+
+.solid_circle:hover + .circle1 {
+	background: rgba(255,255,255,.95)!important;
+	transition: all 500ms;
+	-webkit-transition: all 500ms;
+	width: 22.5vw!important; 
+	height: 22.5vw!important;
+}
+
+.solid_circle:hover + .circle2 {
+	background: rgba(255,255,255,.75)!important;
+	transition: all 500ms;
+	-webkit-transition: all 500ms;
+	 width: 25vw!important; 
+	 height: 25vw!important;
+}
+
+.solid_circle:hover + .circle3 {
+	background: rgba(255,255,255,.50)!important;
+	transition: all 500ms;
+	-webkit-transition: all 500ms;
+	 width: 27.5vw!important; 
+	 height: 27.5vw!important;
+}
+
+circle {
+  stroke: white;
+  stroke-width: 1;
+  fill: black;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+/*  animation: dash 2s linear infinite;*/
+}
+
+@keyframes dash {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+svg {
+/*  height: 100vh;*/
+  display: block;
+  transform: rotate(-90deg);
+  margin: auto;
+}
+
+.percent {
+    font-size: 36px;
+    color: white;
+    font-family: system-ui;
+    opacity: 0;
+    transition: all 500ms;
+	-webkit-transition: all 500ms;
+}
+
+.percent.active {
+	opacity: 1;
+	transition: all 500ms;
+	-webkit-transition: all 500ms;
+}
+
+.begin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    font-size: 36px;
+    color: white;
+    font-family: system-ui;
+    position: absolute;
+    z-index: 9;
+}
+
+</style>
+
+<div class="viewport">
+	<svg width="20vw" height="20vw" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewbox="0 0 100 100">
+		<circle cx="50" cy="50" r="50" pathLength="1"/>
+	</svg>
+	<div class="solid_circle">
+		<div class="begin">
+			<span>BEGIN</span>
+		</div>
+		<div class="percent"><span>0</span>%</div>
+	</div>
+	<div class="circle circle1" style="background: rgba(255,255,255,.75); opacity: .5; width: 20vw; height: 20vw;"></div>
+	<div class="circle circle2" style="background: rgba(255,255,255,.50); opacity: .5; width: 22.5vw; height: 22.5vw;"></div>
+	<!-- <div class="circle" style="background: rgba(255,255,255,.95); opacity: .25; width: 27.5vw; height: 27.5vw;"></div> -->
+	<div class="circle circle3" style="background: rgba(255,255,255,.25); opacity: .5; width: 25vw; height: 25vw;"></div>
+	
+</div>
+
+
+<script
+  src="https://code.jquery.com/jquery-3.7.0.min.js"
+  integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
+  crossorigin="anonymous"></script>
+
+<script>
+
+	var counter = 0;
+
+	// while (counter < 101) {
+		function displayHello() {
+			if (counter < 100) {
+				var percent = 1 - (counter / 100);
+				console.log(percent)
+				$('svg circle').animate({'stroke-dashoffset': percent}, 10);
+				setTimeout(function(){
+					$('.percent span').text(counter)
+				}, 10)
+			
+			counter++;
+			} else {
+				$('.percent').fadeOut()
+				$('svg circle').animate({'stroke-width': 0}, 10);
+			}
+			
+		}
+		
+
+		$('.begin').click(function() {
+			$('.percent').addClass('active')
+			$('.begin').fadeOut()
+			setInterval(displayHello, 100);
+		})
+		
+	// }
+
+</script>
+
+
+
+
+
+
+
